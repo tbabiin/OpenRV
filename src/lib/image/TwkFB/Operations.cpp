@@ -13,6 +13,7 @@
 #include <ImfChromaticities.h>
 #include <ImathMatrix.h>
 #include <ImathVec.h>
+#include <RVMath/LogC.h>
 #include <TwkMath/Math.h>
 #include <TwkMath/Vec4.h>
 #include <TwkMath/Vec3.h>
@@ -3793,7 +3794,18 @@ getLogCCurveParams(LogCTransformParams& params,
     }
     else
     {
-        cout << "ERROR: ALEXACameraCode is not available to perform this operation" << endl;
+        if (ei == 0.0f) ei = 800.0f;
+        RVMath::Param cparam;
+        RVMath::LogC logC(cparam, ei);
+        params.LogCEncodingOffset = logC.getEncodingOffset();
+        params.LogCEncodingGain = logC.getEncodingGain();
+        params.LogCGraySignal = 0.18f;  // logC.getGraySignal();
+        params.LogCBlackOffset = logC.getBlackOffset();
+        params.LogCLinearSlope = logC.getLinearSlope();
+        params.LogCLinearOffset = logC.getLinearOffset();
+        params.LogCLinearCutPoint = (cparam.cutPoint * params.LogCLinearSlope + params.LogCLinearOffset) *
+                                    params.LogCEncodingGain + params.LogCEncodingOffset;
+        params.LogCCutPoint = cparam.cutPoint;
     }
 }
 
