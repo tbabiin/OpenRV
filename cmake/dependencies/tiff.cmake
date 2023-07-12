@@ -32,7 +32,11 @@ SET(_download_hash
 IF(NOT RV_TARGET_WINDOWS)
   # Mac/Linux: Use the unversionned .dylib.so LINK which points to the proper file (which has a diff version number) Mac/Linux: TIFF doesn't use a Postfix only
   # 'MSVC'.
-  RV_MAKE_STANDARD_LIB_NAME("tiff" "" "SHARED" "")
+  IF(RV_TARGET_DARWIN)
+    RV_MAKE_STANDARD_LIB_NAME("tiff" "5.3.0" "SHARED" "")
+  ELSE()
+    RV_MAKE_STANDARD_LIB_NAME("tiff" "" "SHARED" "")
+  ENDIF()
 ELSE()
   # The current CMake build code via NMake doesn't create a Debug lib named "libtiffd.lib"
   RV_MAKE_STANDARD_LIB_NAME("libtiff" "${_version}" "SHARED" "")
@@ -163,9 +167,8 @@ ELSE()
     TARGET ${_target}
     POST_BUILD
     COMMENT "Installing ${_target}'s missing headers"
-    COMMAND ${CMAKE_COMMAND} -E copy ${_base_dir}/build/libtiff/tif_config.h ${_include_dir}
-    COMMAND ${CMAKE_COMMAND} -E copy ${_base_dir}/src/libtiff/tiffiop.h ${_include_dir}
-    COMMAND ${CMAKE_COMMAND} -E copy ${_base_dir}/src/libtiff/tif_dir.h ${_include_dir}
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different ${_base_dir}/build/libtiff/tif_config.h ${_base_dir}/src/libtiff/tiffiop.h ${_base_dir}/src/libtiff/tif_dir.h
+            ${_include_dir}
   )
 ENDIF()
 
