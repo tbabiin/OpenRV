@@ -209,6 +209,7 @@ ELSE()
   SET(_configure_options
       ""
   )
+  STRING(REPLACE "." "" PYTHON_VERSION_SHORT_NO_DOT ${RV_DEPS_PYTHON_VERSION_SHORT})
   LIST(
     APPEND
     _configure_options
@@ -220,9 +221,12 @@ ELSE()
     "-DGLUT_ROOT=${_vcpkg_path}/packages/freeglut_x64-windows" # However, not passing them doesn't seem to cause the build to fail.
     "-DOpenImageIO_ROOT=${_oiio_install_dir}" # And the Dev (cfuoco) said that we need to pass them; they are most likely needed for OCIO APPS
     "-DOCIO_BUILD_PYTHON=ON"
-    "-DOCIO_INSTALL_EXT_PACKAGES=ALL"
-    "-DPython_EXECUTABLE=${OCIO_PYTHON_PATH}"
-    "-DPython_ROOT_DIR=${RV_DEPS_BASE_DIR}/RV_DEPS_PYTHON3/install"
+    "-DOCIO_INSTALL_EXT_PACKAGES=ALL" # We should use the Default which is "MISSING" when OCIO removes OpenExr and find how to pass our own.
+    "-DPython_EXECUTABLE=${RV_DEPS_BASE_DIR}/RV_DEPS_PYTHON3/install/bin/python.exe"
+    "-DPython_ROOT=${RV_DEPS_BASE_DIR}/RV_DEPS_PYTHON3/install"
+    "-DPython_LIBRARY=${RV_DEPS_BASE_DIR}/RV_DEPS_PYTHON3/install/bin/python${PYTHON_VERSION_SHORT_NO_DOT}.lib" # Mandatory param: OCIO CMake code finds Python
+                                                                                                                # with this param
+    "-DPython_INCLUDE_DIR=${RV_DEPS_BASE_DIR}/RV_DEPS_PYTHON3/install/include"
     "-DOCIO_PYTHON_VERSION=${RV_DEPS_PYTHON_VERSION_SHORT}"
     "-DBUILD_SHARED_LIBS=ON"
     "-DOCIO_BUILD_APPS=ON"
