@@ -246,7 +246,7 @@ TARGET_LINK_LIBRARIES(
 IF(RV_TARGET_WINDOWS)
   TARGET_LINK_LIBRARIES(
     ${_target}
-    PUBLIC glew nedmalloc win_posix IPBaseNodes bcrypt
+    PUBLIC glew win_posix IPBaseNodes bcrypt
   )
   TARGET_COMPILE_OPTIONS(
     ${_target}

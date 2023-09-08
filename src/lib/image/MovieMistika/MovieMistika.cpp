@@ -301,7 +301,7 @@ MovieMistika::imagesAtFrame(const ReadRequest& request, FrameBufferVector& fbs)
     uint32_t frameSize = m_header->GetBytesPerFrame();
     uint32_t firstFrameOffset = frameSize;
     
-    unsigned char* frameB = TWK_ALLOCATE_ARRAY_PAGE_ALIGNED(unsigned char, frameSize);
+    unsigned char* frameB = TWK_ALLOCATE_ARRAY(unsigned char, frameSize);
     if (!frameB) 
     {
         TWK_THROW_EXC_STREAM("Error reading Mistika file " << filename() << ", out of memory");
@@ -457,7 +457,7 @@ MovieMistika::imagesAtFrame(const ReadRequest& request, FrameBufferVector& fbs)
             break;
     }
 
-    if (doDelete) TWK_DEALLOCATE(frameB);
+    if (doDelete) TWK_DEALLOCATE_ARRAY(frameB);
 
     fb.setIdentifier("");
     identifier(frame, fb.idstream());

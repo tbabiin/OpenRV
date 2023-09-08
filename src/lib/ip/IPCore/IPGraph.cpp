@@ -2563,7 +2563,7 @@ IPGraph::evalThreadMain(EvalThreadData* threadData)
             */
             TWK_CACHE_LOCK(m_fbcache, "");
             size_t minBuffer = 64*1024*1024;
-            unsigned char* chkData = TWK_ALLOCATE_ARRAY_PAGE_ALIGNED(unsigned char, minBuffer);
+            unsigned char* chkData = TWK_ALLOCATE_ARRAY(unsigned char, minBuffer);
 
 
             //  fprintf (stderr, "%p evaluate, frame %d\n", pthread_self(), frame);

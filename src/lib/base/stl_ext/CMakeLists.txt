@@ -33,14 +33,14 @@ TARGET_INCLUDE_DIRECTORIES(
 IF(RV_TARGET_LINUX)
   TARGET_LINK_LIBRARIES(
     ${_target}
-    PUBLIC nedmalloc rt
+    PUBLIC rt
   )
 ENDIF()
 
 IF(RV_TARGET_WINDOWS)
   TARGET_LINK_LIBRARIES(
     ${_target}
-    PUBLIC nedmalloc win_pthreads
+    PUBLIC win_pthreads
   )
 ENDIF()
 

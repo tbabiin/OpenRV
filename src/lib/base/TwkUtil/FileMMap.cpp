@@ -142,7 +142,7 @@ FileMMap::FileMMap(const string& filename, bool reallyMMap)
     else
     {
         DWORD nread = 0;
-        rawdata = TWK_ALLOCATE_ARRAY_PAGE_ALIGNED(void*, fileSize);
+        rawdata = TWK_ALLOCATE_ARRAY(void*, fileSize);
 
         if (!ReadFile((HANDLE) fileHandle, rawdata, fileSize, &nread, NULL))
         {

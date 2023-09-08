@@ -110,7 +110,7 @@ MemPool::alloc(size_t size)
     //
     if (!globalMemPool)
     {
-	return TWK_ALLOCATE_ARRAY_PAGE_ALIGNED(unsigned char, size);
+	return TWK_ALLOCATE_ARRAY(unsigned char, size);
     }
 
     MemPool& mp(*globalMemPool);
@@ -122,14 +122,14 @@ MemPool::alloc(size_t size)
     void* ptr = 0;
     if (size < mp.m_minElemSize || mp.m_shortCircuit)
     {
-        ptr = TWK_ALLOCATE_ARRAY_PAGE_ALIGNED(unsigned char, size);
+        ptr = TWK_ALLOCATE_ARRAY(unsigned char, size);
     }
     else
     {
         ptr = mp.m_freeList->findAndUseElem(size);
         if (!ptr)
         {
-            ptr = TWK_ALLOCATE_ARRAY_PAGE_ALIGNED(unsigned char, size);
+            ptr = TWK_ALLOCATE_ARRAY(unsigned char, size);
             if (mp.m_debugOutput && mp.m_elemMap.count(ptr) != 0)
             {
                 cerr << "ERROR: ptr already in map! " << ptr << endl;

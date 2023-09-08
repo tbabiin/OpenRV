@@ -35,7 +35,7 @@ TARGET_LINK_LIBRARIES(
 IF(RV_TARGET_WINDOWS)
   TARGET_LINK_LIBRARIES(
     ${_target}
-    PRIVATE nedmalloc glew
+    PRIVATE glew
   )
 ENDIF()
 

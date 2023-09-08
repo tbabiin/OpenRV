@@ -64,7 +64,7 @@ TARGET_LINK_LIBRARIES(
 IF(RV_TARGET_WINDOWS)
   TARGET_LINK_LIBRARIES(
     ${_target}
-    PRIVATE glew nedmalloc win_posix gc
+    PRIVATE glew win_posix gc
   )
   TARGET_COMPILE_OPTIONS(
     ${_target}

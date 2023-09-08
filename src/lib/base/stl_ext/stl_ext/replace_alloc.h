@@ -7,56 +7,22 @@
 #ifndef __stl_ext__replace_alloc__h__
 #define __stl_ext__replace_alloc__h__
 
-#ifdef PLATFORM_LINUX
+#if defined(PLATFORM_LINUX) || defined(PLATFORM_WINDOWS)
 #include <malloc.h>
 #endif
 
-#ifdef PLATFORM_WINDOWS
-#define TWK_USE_NEDMALLOC
-#endif
 
-#if defined(PLATFORM_APPLE_MACH_BSD)
-// DARWIN, IOS, IOS_SIMULATOR all declare PLATFORM_APPLE_MACH_BSD
-#define TWK_USE_SYSTEM_ALLOC
-#endif
-
-#ifdef PLATFORM_LINUX
-//#define TWK_USE_SYSTEM_ALLOC
-#define TWK_USE_NEDMALLOC
-#endif
-
-#ifdef TWK_USE_NEDMALLOC
-#include <nedmalloc.h>
-#define TWK_ALLOCATE(T) ((T*)nedmalloc(sizeof(T)))
-#define TWK_ALLOCATE_ARRAY(T,n) ((T*)nedmalloc(n * sizeof(T)))
-#define TWK_ALLOCATE_PAGE_ALIGNED(T) ((T*)nedmemalign(4096, sizeof(T)))
-#define TWK_ALLOCATE_ARRAY_PAGE_ALIGNED(T,n) ((T*)nedmemalign(4096, n * sizeof(T)))
-#define TWK_DEALLOCATE(p) { if (p) nedfree((void*)p); }
-#define TWK_DEALLOCATE_ARRAY(p) { if (p) nedfree((void*)p); }
-#endif
-
-
-#ifdef TWK_USE_SYSTEM_ALLOC
 #define TWK_ALLOCATE(T) ((T*)malloc(sizeof(T)))
 #define TWK_ALLOCATE_ARRAY(T,n) ((T*)malloc(n * sizeof(T)))
 #define TWK_DEALLOCATE(p) { if (p) free((void*)p); }
 #define TWK_DEALLOCATE_ARRAY(p) { if (p) free((void*)p); }
-    #ifdef PLATFORM_LINUX
-        #define TWK_ALLOCATE_PAGE_ALIGNED(T) ((T*)memalign(4096, sizeof(T)))
-        #define TWK_ALLOCATE_ARRAY_PAGE_ALIGNED(T,n) ((T*)memalign(4096, sizeof(T)*n))
-    #endif
-    #if defined(PLATFORM_APPLE_MACH_BSD)
-        #define TWK_ALLOCATE_PAGE_ALIGNED(T) ((T*)valloc(sizeof(T)))
-        #define TWK_ALLOCATE_ARRAY_PAGE_ALIGNED(T,n) ((T*)valloc(sizeof(T)*n))
-    #endif
-#endif
 
 #define TWK_CLASS_NEW_DELETE(T) \
 void* T::operator new (size_t s) { return TWK_ALLOCATE_ARRAY(unsigned char,s); } \
 void T::operator delete (void* p, size_t s) { TWK_DEALLOCATE_ARRAY(p); }
 
 #define TWK_CLASS_NEW_DELETE_PAGE_ALIGNED(T) \
-void* T::operator new (size_t s) { return TWK_ALLOCATE_ARRAY_PAGE_ALIGNED(unsigned char,s); } \
+void* T::operator new (size_t s) { return TWK_ALLOCATE_ARRAY(unsigned char,s); } \
 void T::operator delete (void* p, size_t s) { TWK_DEALLOCATE_ARRAY(p); }
 
 namespace stl_ext {
