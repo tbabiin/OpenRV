@@ -14,11 +14,11 @@ SET(_target
 
 # This version of boost resolves Python3 compatibilty issues on Big Sur and Monterey and is compatible with Python 2.7 through Python 3.10
 SET(_version
-    "1.80.0"
+    "1.76.0"
 )
 
 SET(_major_minor_version
-    "1_80"
+    "1_76"
 )
 
 STRING(REPLACE "." "_" _version_with_underscore ${_version})
@@ -27,7 +27,7 @@ SET(_download_url
 )
 
 SET(_download_hash
-    077f074743ea7b0cb49c6ed43953ae95
+    e425bf1f1d8c36a3cd464884e74f007a
 )
 
 # Set _base_dir for Clean-<target>
